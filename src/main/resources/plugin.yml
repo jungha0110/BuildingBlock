@@ -1,0 +1,10 @@
+name: BuildingBlock
+version: 1.0.0
+main: xyz.jungha.buildingblock.BuildingBlock
+api-version: 1.21
+
+commands:
+  청크:
+    description: 청크 관리 명령어
+  청크관리:
+    description: 관리자용 청크 관리 명령어
