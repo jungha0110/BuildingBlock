@@ -5,7 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.jungha.buildingblock.command.SubCommand;
-import xyz.jungha.buildingblock.repository.ChunkRepository;
+import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +13,12 @@ import java.util.stream.Collectors;
 public class InfoCommand implements SubCommand {
 
     private final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private final ChunkRepository chunkRepository;
+    private final ChunkService chunkService;
 
-    public InfoCommand(ChunkRepository chunkRepository) {
-        this.chunkRepository = chunkRepository;
+    public InfoCommand(ChunkService chunkService) {
+        this.chunkService = chunkService;
     }
+
     public String getName() {
         return "정보";
     }
@@ -39,10 +40,10 @@ public class InfoCommand implements SubCommand {
             return true;
         }
         Chunk chunk = player.getLocation().getChunk();
-        if (chunkRepository.contains(chunk)) {
+        if (chunkService.hasChunkData(chunk)) {
             player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + chunk.getChunkKey()));
-            player.sendMessage(MINI_MESSAGE.deserialize("ㄴ 주인 : " + chunkRepository.getOwner(chunk).getName()));
-            String members = chunkRepository.getMember(chunk).stream()
+            player.sendMessage(MINI_MESSAGE.deserialize("ㄴ 주인 : " + chunkService.getOwner(chunk).getName()));
+            String members = chunkService.getMembers(chunk).stream()
                     .map(member -> member.getName() != null ? member.getName() : member.getUniqueId().toString())
                     .collect(Collectors.joining(", "));
             player.sendMessage(MINI_MESSAGE.deserialize("ㄴ 멤버 : " + (members.isEmpty() ? "없음" : members)));

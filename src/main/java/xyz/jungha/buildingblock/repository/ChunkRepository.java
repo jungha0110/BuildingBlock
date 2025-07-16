@@ -65,7 +65,7 @@ public class ChunkRepository {
         return config.getOfflinePlayer(getChunkKey(chunk) + ".owner");
     }
 
-    public List<OfflinePlayer> getMember(Chunk chunk) {
+    public List<OfflinePlayer> getMembers(Chunk chunk) {
         return config.getStringList(getChunkKey(chunk) + ".members").stream()
                 .map(uuidStr -> {
                     try {

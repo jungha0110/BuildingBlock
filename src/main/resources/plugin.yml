@@ -4,7 +4,5 @@ main: xyz.jungha.buildingblock.BuildingBlock
 api-version: 1.21
 
 commands:
-  청크:
-    description: 청크 관리 명령어
-  청크관리:
-    description: 관리자용 청크 관리 명령어
+  건차관리:
+    description: 관리자용 건차 관리 명령어

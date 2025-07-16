@@ -6,17 +6,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.jungha.buildingblock.command.SubCommand;
 import xyz.jungha.buildingblock.repository.ChunkRepository;
+import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.List;
 
 public class RemoveCommand implements SubCommand {
 
     private final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private final ChunkRepository chunkRepository;
+    private final ChunkService chunkService;
 
-    public RemoveCommand(ChunkRepository chunkRepository) {
-        this.chunkRepository = chunkRepository;
+    public RemoveCommand(ChunkService chunkService) {
+        this.chunkService = chunkService;
     }
+
     public String getName() {
         return "제거";
     }
@@ -37,7 +39,6 @@ public class RemoveCommand implements SubCommand {
             sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>플레이어만 사용할 수 있습니다."));
             return true;
         }
-        ChunkRepository chunkRepo = chunkRepository;
         Chunk targetChunk;
         if (args.length == 1) {
             String[] id = args[0].split("-");
@@ -58,12 +59,12 @@ public class RemoveCommand implements SubCommand {
             return true;
         }
 
-        if (!chunkRepo.contains(targetChunk)) {
+        if (!chunkService.hasChunkData(targetChunk)) {
             player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>주인 없는 건차입니다."));
             return true;
         }
 
-        chunkRepo.removeChunk(targetChunk);
+        chunkService.removeChunk(targetChunk);
         player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 해당 건차를 제거했습니다."));
         return true;
     }

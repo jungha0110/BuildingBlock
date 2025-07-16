@@ -14,13 +14,20 @@ repositories {
     mavenCentral()
     maven {
         url = uri("https://jitpack.io")
+    }
+    maven {
         url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
+    maven {
+        url = uri("https://repo.nexomc.com/releases")
     }
 }
 
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    implementation("com.nexomc:nexo:1.8.0")
 
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 }
