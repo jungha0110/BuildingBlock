@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,10 +14,12 @@ public class ManagerCommand implements TabExecutor {
 
     private final Map<String, SubCommand> subCommands;
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+    private final ChunkService chunkService;
 
-    public ManagerCommand(List<SubCommand> subCommands) {
+    public ManagerCommand(List<SubCommand> subCommands, ChunkService chunkService) {
         this.subCommands = subCommands.stream()
                 .collect(Collectors.toUnmodifiableMap(SubCommand::getName, subCommand -> subCommand));
+        this.chunkService = chunkService;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class ManagerCommand implements TabExecutor {
         }
 
         if (!mainCommand.hasPermission(sender)) {
-            sender.sendMessage(MINI_MESSAGE.deserialize("[<gold>직업<white>] <red>당신은 권한이 없습니다."));
+            sender.sendMessage(MINI_MESSAGE.deserialize(chunkService.getConfig().getString("no-permission-message", "<red>You do not have permission.")));
             return true;
         }
 
@@ -41,10 +44,13 @@ public class ManagerCommand implements TabExecutor {
     }
 
     private void showHelp(CommandSender sender, String label, Map<String, SubCommand> commands) {
-        sender.sendMessage(MINI_MESSAGE.deserialize("[<gold>직업<white>] 도움말"));
+        sender.sendMessage(MINI_MESSAGE.deserialize(chunkService.getConfig().getString("help-header", "<gold>Help:")));
         commands.values().stream()
                 .filter(sub -> sub.hasPermission(sender))
-                .forEach(sub -> sender.sendMessage("- /직업 %s %s".formatted(sub.getName(), sub.getUsage())));
+                .forEach(sub -> sender.sendMessage(MINI_MESSAGE.deserialize(chunkService.getConfig().getString("help-format", "- /%label% %name% %usage%")
+                        .replace("%label%", label)
+                        .replace("%name%", sub.getName())
+                        .replace("%usage%", sub.getUsage()))));
     }
 
     @Override

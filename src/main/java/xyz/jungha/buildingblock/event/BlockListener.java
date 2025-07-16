@@ -29,9 +29,9 @@ public class BlockListener implements Listener {
     }
 
     private boolean shouldCancel(Player player, Chunk chunk) {
+        if (!chunkService.hasChunkData(chunk)) return false;
         return !player.isOp()
-                && (!chunkService.hasChunkData(chunk)
-                || !chunkService.getMembers(chunk).contains(player)
-                || !chunkService.getOwner(chunk).equals(player));
+                && (!chunkService.getMembers(chunk).contains(player)
+                || !player.equals(chunkService.getOwner(chunk)));
     }
 }

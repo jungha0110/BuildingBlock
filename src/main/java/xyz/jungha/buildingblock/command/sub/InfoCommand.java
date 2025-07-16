@@ -2,12 +2,14 @@ package xyz.jungha.buildingblock.command.sub;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.jungha.buildingblock.command.SubCommand;
 import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class InfoCommand implements SubCommand {
@@ -19,6 +21,7 @@ public class InfoCommand implements SubCommand {
         this.chunkService = chunkService;
     }
 
+    @Override
     public String getName() {
         return "정보";
     }
@@ -36,21 +39,32 @@ public class InfoCommand implements SubCommand {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>플레이어만 사용할 수 있습니다."));
+            sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
             return true;
         }
+
         Chunk chunk = player.getLocation().getChunk();
-        if (chunkService.hasChunkData(chunk)) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + chunk.getChunkKey()));
-            player.sendMessage(MINI_MESSAGE.deserialize("ㄴ 주인 : " + chunkService.getOwner(chunk).getName()));
-            String members = chunkService.getMembers(chunk).stream()
-                    .map(member -> member.getName() != null ? member.getName() : member.getUniqueId().toString())
-                    .collect(Collectors.joining(", "));
-            player.sendMessage(MINI_MESSAGE.deserialize("ㄴ 멤버 : " + (members.isEmpty() ? "없음" : members)));
-        } else {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 주인 없는 구역 입니다"));
+        if (!chunkService.hasChunkData(chunk)) {
+            sendMessage(player, "주인 없는 구역 입니다");
+            return true;
         }
+
+        sendMessage(player, chunk.getX() + "-" + chunk.getZ());
+
+        OfflinePlayer owner = chunkService.getOwner(chunk);
+        sendMessage(player, "ㄴ 주인 : " + (owner != null ? owner.getName() : "없음"));
+
+        String members = chunkService.getMembers(chunk).stream()
+                .map(OfflinePlayer::getName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(", "));
+        sendMessage(player, "ㄴ 멤버 : " + (members.isEmpty() ? "없음" : members));
+
         return true;
+    }
+
+    private void sendMessage(CommandSender sender, String message) {
+        sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + message));
     }
 
     @Override

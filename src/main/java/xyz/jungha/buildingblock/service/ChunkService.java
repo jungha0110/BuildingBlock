@@ -1,8 +1,5 @@
 package xyz.jungha.buildingblock.service;
 
-import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
-import lombok.Getter;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -33,21 +30,30 @@ public class ChunkService {
     }
 
     public void removeChunk(Chunk chunk) {
-        if (!hasChunkData(chunk)) return;
         chunkRepository.removeChunk(chunk);
     }
 
     public OfflinePlayer getOwner(Chunk chunk) {
-        if (!hasChunkData(chunk)) return null;
         return chunkRepository.getOwner(chunk);
     }
 
     public List<OfflinePlayer> getMembers(Chunk chunk) {
-        if (!hasChunkData(chunk)) return null;
         return chunkRepository.getMembers(chunk);
+    }
+
+    public void addMember(Chunk chunk, OfflinePlayer member) {
+        chunkRepository.addMember(chunk, member);
+    }
+
+    public void removeMember(Chunk chunk, OfflinePlayer member) {
+        chunkRepository.removeMember(chunk, member);
     }
 
     public FileConfiguration getConfig() {
         return plugin.getConfig();
+    }
+
+    public void saveChunkData() {
+        chunkRepository.saveConfig();
     }
 }

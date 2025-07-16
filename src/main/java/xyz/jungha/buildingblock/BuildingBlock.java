@@ -5,8 +5,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.jungha.buildingblock.command.ManagerCommand;
 import xyz.jungha.buildingblock.command.sub.InfoCommand;
+import xyz.jungha.buildingblock.command.sub.MenuCommand;
 import xyz.jungha.buildingblock.command.sub.RemoveCommand;
+import xyz.jungha.buildingblock.command.sub.TeleportCommand;
 import xyz.jungha.buildingblock.event.BlockListener;
+import xyz.jungha.buildingblock.event.InventoryListener;
 import xyz.jungha.buildingblock.event.PlayerInteractListener;
 import xyz.jungha.buildingblock.repository.ChunkRepository;
 import xyz.jungha.buildingblock.service.ChunkService;
@@ -34,12 +37,15 @@ public class BuildingBlock extends JavaPlugin {
 
         getCommand("건차관리").setExecutor(new ManagerCommand(List.of(
                 new InfoCommand(chunkService),
-                new RemoveCommand(chunkService)
-        )));
+                new RemoveCommand(chunkService),
+                new TeleportCommand(),
+                new MenuCommand(chunkService)
+        ), chunkService));
 
         registerEvents(
                 new BlockListener(chunkService),
-                new PlayerInteractListener(chunkService)
+                new PlayerInteractListener(chunkService),
+                new InventoryListener(chunkService)
         );
     }
 

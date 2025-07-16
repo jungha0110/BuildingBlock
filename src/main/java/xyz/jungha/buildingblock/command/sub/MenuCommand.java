@@ -3,27 +3,35 @@ package xyz.jungha.buildingblock.command.sub;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import xyz.jungha.buildingblock.command.SubCommand;
+import xyz.jungha.buildingblock.menu.MainMenu;
+import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.List;
 
-public class TeleportCommand implements SubCommand {
+public class MenuCommand implements SubCommand {
 
     private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
+    private final ChunkService chunkService;
+
+    public MenuCommand(ChunkService chunkService) {
+        this.chunkService = chunkService;
+    }
 
     @Override
     public String getName() {
-        return "이동";
+        return "메뉴";
     }
 
     @Override
     public String getUsage() {
-        return "[청크ID]";
+        return "";
     }
 
     @Override
     public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("buildingblock.teleport");
+        return sender.hasPermission("buildingblock.menu");
     }
 
     @Override
@@ -32,23 +40,13 @@ public class TeleportCommand implements SubCommand {
             sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
             return true;
         }
-        if (args.length != 1) return false;
-        String[] id = args[0].split("-");
-        if (id.length != 2) {
-            sendMessage(player, "<red>잘못된 ID 형식입니다.");
+
+        Inventory menu = MainMenu.getInventory(chunkService);
+        if (menu == null) {
+            sendMessage(player, "<red>메뉴를 불러오는 데 실패했습니다. (설정 파일 확인)");
             return true;
         }
-        try {
-            int chunkX = Integer.parseInt(id[0]);
-            int chunkZ = Integer.parseInt(id[1]);
-            int blockX = (chunkX << 4) + 8;
-            int blockZ = (chunkZ << 4) + 8;
-            int blockY = player.getWorld().getHighestBlockYAt(blockX, blockZ);
-            player.teleport(new org.bukkit.Location(player.getWorld(), blockX + 0.5, blockY, blockZ + 0.5));
-            sendMessage(player, "<aqua>청크로 이동했습니다.");
-        } catch (NumberFormatException e) {
-            sendMessage(player, "<red>잘못된 ID 입니다.");
-        }
+        player.openInventory(menu);
         return true;
     }
 

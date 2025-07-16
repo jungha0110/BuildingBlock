@@ -1,3 +1,7 @@
 creation-world : world
 
 chunk-item: minecraft:paper
+
+menu-title: <aqua>메뉴
+member-title: <aqua>멤버
+add-member-title: <aqua>추가
