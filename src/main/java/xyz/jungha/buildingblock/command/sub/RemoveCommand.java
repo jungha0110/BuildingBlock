@@ -1,44 +1,24 @@
 package xyz.jungha.buildingblock.command.sub;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Chunk;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.jungha.buildingblock.command.SubCommand;
+import xyz.jungha.buildingblock.command.AbstractSubCommand;
 import xyz.jungha.buildingblock.service.ChunkService;
 
-import java.util.List;
-
-public class RemoveCommand implements SubCommand {
-
-    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private final ChunkService chunkService;
+public class RemoveCommand extends AbstractSubCommand {
 
     public RemoveCommand(ChunkService chunkService) {
-        this.chunkService = chunkService;
-    }
-
-    @Override
-    public String getName() {
-        return "제거";
-    }
-
-    @Override
-    public String getUsage() {
-        return "[청크ID]";
-    }
-
-    @Override
-    public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("buildingblock.remove");
+        super(chunkService, "제거", "[청크ID]", "buildingblock.remove");
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
+        Player player = getPlayer(sender);
+        if (player == null) {
             return true;
         }
+
         Chunk targetChunk;
         if (args.length == 1) {
             String[] id = args[0].split("-");
@@ -67,14 +47,5 @@ public class RemoveCommand implements SubCommand {
         chunkService.removeChunk(targetChunk);
         sendMessage(player, "해당 건차를 제거했습니다.");
         return true;
-    }
-
-    private void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + message));
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return List.of();
     }
 }

@@ -1,45 +1,26 @@
 package xyz.jungha.buildingblock.command.sub;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.jungha.buildingblock.command.SubCommand;
+import xyz.jungha.buildingblock.command.AbstractSubCommand;
 import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class InfoCommand implements SubCommand {
-
-    private final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-    private final ChunkService chunkService;
+public class InfoCommand extends AbstractSubCommand {
 
     public InfoCommand(ChunkService chunkService) {
-        this.chunkService = chunkService;
-    }
-
-    @Override
-    public String getName() {
-        return "정보";
-    }
-
-    @Override
-    public String getUsage() {
-        return "";
-    }
-
-    @Override
-    public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("buildingblock.info");
+        super(chunkService, "정보", "", "buildingblock.info");
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
+        Player player = getPlayer(sender);
+        if (player == null) {
             return true;
         }
 
@@ -61,14 +42,5 @@ public class InfoCommand implements SubCommand {
         sendMessage(player, "ㄴ 멤버 : " + (members.isEmpty() ? "없음" : members));
 
         return true;
-    }
-
-    private void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + message));
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return List.of();
     }
 }

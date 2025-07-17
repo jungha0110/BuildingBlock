@@ -1,5 +1,6 @@
 package xyz.jungha.buildingblock.menu;
 
+import com.github.nyaon08.rtustudio.nicknames.NickNames;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -12,6 +13,8 @@ import xyz.jungha.buildingblock.service.ChunkService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AddMemberMenu extends AbstractMenu {
@@ -21,11 +24,13 @@ public class AddMemberMenu extends AbstractMenu {
         if (title == null) return null;
         Inventory inv = Bukkit.createInventory(null, 54, MINI_MESSAGE.deserialize(title + " - " + page));
 
-        List<OfflinePlayer> allPlayers = Arrays.asList(Bukkit.getOfflinePlayers());
-        List<OfflinePlayer> currentMembers = chunkService.getMembers(chunk);
+        Set<UUID> memberUuids = chunkService.getMembers(chunk).stream()
+                .map(OfflinePlayer::getUniqueId)
+                .collect(Collectors.toSet());
+        UUID ownerUuid = chunkService.getOwner(chunk).getUniqueId();
 
-        List<OfflinePlayer> playersToAdd = allPlayers.stream()
-                .filter(player -> currentMembers.stream().noneMatch(member -> member.getUniqueId().equals(player.getUniqueId())))
+        List<OfflinePlayer> playersToAdd = Arrays.stream(Bukkit.getOfflinePlayers())
+                .filter(player -> !memberUuids.contains(player.getUniqueId()) && !player.getUniqueId().equals(ownerUuid))
                 .toList();
 
         int playersPerPage = 45;
@@ -35,9 +40,11 @@ public class AddMemberMenu extends AbstractMenu {
         for (int i = startIndex; i < endIndex; i++) {
             OfflinePlayer player = playersToAdd.get(i);
             ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+            String playerName = getPlayerName(player);
+
             playerHead.editMeta(SkullMeta.class, meta -> {
                 meta.setOwningPlayer(player);
-                meta.displayName(MINI_MESSAGE.deserialize("<white>" + player.getName()));
+                meta.displayName(MINI_MESSAGE.deserialize("<white>" + playerName));
                 meta.lore(List.of(
                         Component.empty(),
                         MINI_MESSAGE.deserialize("<gray>클릭하여 멤버로 추가합니다.")
@@ -47,12 +54,21 @@ public class AddMemberMenu extends AbstractMenu {
         }
 
         if (page > 0) {
-            inv.setItem(51, createItem(Material.PAPER, "<red>이전 페이지", null));
+            inv.setItem(47, createItem(Material.PAPER, "<red>이전 페이지", null));
         }
 
         if (endIndex < playersToAdd.size()) {
-            inv.setItem(47, createItem(Material.PAPER, "<green>다음 페이지", null));
+            inv.setItem(51, createItem(Material.PAPER, "<green>다음 페이지", null));
         }
         return inv;
+    }
+
+    private static String getPlayerName(OfflinePlayer player) {
+        try {
+            String nickName = NickNames.getInstance().getNickNamesManager().getName(player.getUniqueId());
+            return (nickName != null && !nickName.isEmpty()) ? nickName : player.getName();
+        } catch (NoClassDefFoundError e) {
+            return player.getName();
+        }
     }
 }

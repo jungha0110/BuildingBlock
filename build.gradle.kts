@@ -21,6 +21,9 @@ repositories {
     maven {
         url = uri("https://repo.nexomc.com/releases")
     }
+    maven {
+        url = uri("https://repo.codemc.io/repository/rtuserver/")
+    }
 }
 
 dependencies {
@@ -28,6 +31,10 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     compileOnly("com.nexomc:nexo:1.8.0")
+
+    compileOnly("kr.rtuserver:framework-api:2.9.1")
+
+    compileOnly(fileTree("libs") { include("*.jar") })
 
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 }

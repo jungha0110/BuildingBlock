@@ -4,8 +4,8 @@ import lombok.Getter;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.jungha.buildingblock.command.ManagerCommand;
+import xyz.jungha.buildingblock.command.MenuCommand;
 import xyz.jungha.buildingblock.command.sub.InfoCommand;
-import xyz.jungha.buildingblock.command.sub.MenuCommand;
 import xyz.jungha.buildingblock.command.sub.RemoveCommand;
 import xyz.jungha.buildingblock.command.sub.TeleportCommand;
 import xyz.jungha.buildingblock.event.BlockListener;
@@ -38,9 +38,9 @@ public class BuildingBlock extends JavaPlugin {
         getCommand("건차관리").setExecutor(new ManagerCommand(List.of(
                 new InfoCommand(chunkService),
                 new RemoveCommand(chunkService),
-                new TeleportCommand(),
-                new MenuCommand(chunkService)
+                new TeleportCommand(chunkService)
         ), chunkService));
+        getCommand("건차").setExecutor(new MenuCommand(chunkService));
 
         registerEvents(
                 new BlockListener(chunkService),

@@ -1,5 +1,6 @@
 package xyz.jungha.buildingblock.menu;
 
+import com.github.nyaon08.rtustudio.nicknames.NickNames;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -29,9 +30,10 @@ public class MemberMenu extends AbstractMenu {
         for (int i = startIndex; i < endIndex; i++) {
             OfflinePlayer player = members.get(i);
             ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD);
+            String playerName = getPlayerName(player);
             playerHead.editMeta(SkullMeta.class, meta -> {
                 meta.setOwningPlayer(player);
-                meta.displayName(MINI_MESSAGE.deserialize("<white>" + player.getName()));
+                meta.displayName(MINI_MESSAGE.deserialize("<white>" + playerName));
                 meta.lore(List.of(
                         Component.empty(),
                         MINI_MESSAGE.deserialize("<gray>클릭하여 이 멤버를 제외합니다.")
@@ -43,12 +45,21 @@ public class MemberMenu extends AbstractMenu {
         inv.setItem(49, createItem(Material.PAPER, "멤버 추가", List.of(" ", "<gray>클릭 시 멤버 추가 메뉴창이 열립니다.")));
 
         if (page > 0) {
-            inv.setItem(51, createItem(Material.PAPER, "<red>이전 페이지", null));
+            inv.setItem(47, createItem(Material.PAPER, "<red>이전 페이지", null));
         }
 
         if (endIndex < members.size()) {
-            inv.setItem(47, createItem(Material.PAPER, "<green>다음 페이지", null));
+            inv.setItem(51, createItem(Material.PAPER, "<green>다음 페이지", null));
         }
         return inv;
+    }
+
+    private static String getPlayerName(OfflinePlayer player) {
+        try {
+            String nickName = NickNames.getInstance().getNickNamesManager().getName(player.getUniqueId());
+            return (nickName != null && !nickName.isEmpty()) ? nickName : player.getName();
+        } catch (NoClassDefFoundError e) {
+            return player.getName();
+        }
     }
 }

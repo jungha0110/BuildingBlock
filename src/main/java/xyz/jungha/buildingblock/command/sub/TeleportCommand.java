@@ -1,43 +1,33 @@
 package xyz.jungha.buildingblock.command.sub;
 
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import xyz.jungha.buildingblock.command.SubCommand;
+import xyz.jungha.buildingblock.command.AbstractSubCommand;
+import xyz.jungha.buildingblock.service.ChunkService;
 
-import java.util.List;
+public class TeleportCommand extends AbstractSubCommand {
 
-public class TeleportCommand implements SubCommand {
-
-    private static final MiniMessage MINI_MESSAGE = MiniMessage.miniMessage();
-
-    @Override
-    public String getName() {
-        return "이동";
-    }
-
-    @Override
-    public String getUsage() {
-        return "[청크ID]";
-    }
-
-    @Override
-    public boolean hasPermission(CommandSender sender) {
-        return sender.hasPermission("buildingblock.teleport");
+    public TeleportCommand(ChunkService chunkService) {
+        super(chunkService, "이동", "[청크ID]", "buildingblock.teleport");
     }
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player player)) {
-            sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
+        Player player = getPlayer(sender);
+        if (player == null) {
             return true;
         }
-        if (args.length != 1) return false;
+
+        if (args.length != 1) {
+            return false;
+        }
+
         String[] id = args[0].split("-");
         if (id.length != 2) {
             sendMessage(player, "<red>잘못된 ID 형식입니다.");
             return true;
         }
+
         try {
             int chunkX = Integer.parseInt(id[0]);
             int chunkZ = Integer.parseInt(id[1]);
@@ -50,14 +40,5 @@ public class TeleportCommand implements SubCommand {
             sendMessage(player, "<red>잘못된 ID 입니다.");
         }
         return true;
-    }
-
-    private void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + message));
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return List.of();
     }
 }

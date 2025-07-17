@@ -41,6 +41,10 @@ public class ChunkService {
         return chunkRepository.getMembers(chunk);
     }
 
+    public boolean isMember(Chunk chunk, OfflinePlayer player) {
+        return chunkRepository.isMember(chunk, player);
+    }
+
     public void addMember(Chunk chunk, OfflinePlayer member) {
         chunkRepository.addMember(chunk, member);
     }

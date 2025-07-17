@@ -6,3 +6,5 @@ api-version: 1.21
 commands:
   건차관리:
     description: 관리자용 건차 관리 명령어
+  건차:
+    description: 건차 관련 명령어

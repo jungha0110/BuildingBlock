@@ -1,6 +1,6 @@
 package xyz.jungha.buildingblock.data;
 
-import org.bukkit.OfflinePlayer;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ChunkData {
+
+    @Getter
     private UUID ownerUuid;
     private final List<UUID> memberUuids;
 
@@ -19,14 +21,6 @@ public class ChunkData {
     public ChunkData(UUID ownerUuid, List<UUID> memberUuids) {
         this.ownerUuid = ownerUuid;
         this.memberUuids = new ArrayList<>(memberUuids);
-    }
-
-    public UUID getOwnerUuid() {
-        return ownerUuid;
-    }
-
-    public void setOwnerUuid(UUID ownerUuid) {
-        this.ownerUuid = ownerUuid;
     }
 
     public List<UUID> getMemberUuids() {

@@ -90,7 +90,6 @@ public class ChunkRepository {
         String key = getChunkKey(chunk);
         if (!chunkDataMap.containsKey(key)) {
             chunkDataMap.put(key, new ChunkData(owner.getUniqueId()));
-            saveConfig();
         }
     }
 
@@ -98,7 +97,6 @@ public class ChunkRepository {
         String key = getChunkKey(chunk);
         if (chunkDataMap.containsKey(key)) {
             chunkDataMap.remove(key);
-            saveConfig();
         }
     }
 
@@ -117,12 +115,17 @@ public class ChunkRepository {
                 .collect(Collectors.toList());
     }
 
+    public boolean isMember(Chunk chunk, OfflinePlayer player) {
+        String key = getChunkKey(chunk);
+        ChunkData data = chunkDataMap.get(key);
+        return data != null && data.isMember(player.getUniqueId());
+    }
+
     public void addMember(Chunk chunk, OfflinePlayer player) {
         String key = getChunkKey(chunk);
         ChunkData data = chunkDataMap.get(key);
         if (data != null) {
             data.addMember(player.getUniqueId());
-            saveConfig();
         }
     }
 
@@ -131,7 +134,6 @@ public class ChunkRepository {
         ChunkData data = chunkDataMap.get(key);
         if (data != null) {
             data.removeMember(player.getUniqueId());
-            saveConfig();
         }
     }
 }

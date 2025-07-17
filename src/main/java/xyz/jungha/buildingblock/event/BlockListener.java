@@ -1,6 +1,7 @@
 package xyz.jungha.buildingblock.event;
 
 import org.bukkit.Chunk;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,8 +31,11 @@ public class BlockListener implements Listener {
 
     private boolean shouldCancel(Player player, Chunk chunk) {
         if (!chunkService.hasChunkData(chunk)) return false;
-        return !player.isOp()
-                && (!chunkService.getMembers(chunk).contains(player)
-                || !player.equals(chunkService.getOwner(chunk)));
+        if (player.isOp()) return false;
+
+        OfflinePlayer owner = chunkService.getOwner(chunk);
+        if (player.equals(owner)) return false;
+
+        return !chunkService.isMember(chunk, player);
     }
 }
