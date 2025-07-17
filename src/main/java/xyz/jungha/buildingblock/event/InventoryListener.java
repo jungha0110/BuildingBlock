@@ -62,12 +62,15 @@ public class InventoryListener implements Listener {
     }
 
     private void handleMainMenuClick(InventoryClickEvent event, Player player) {
-        Inventory menu = switch (event.getSlot()) {
-            case 11 -> MemberMenu.getInventory(chunkService, player.getChunk(), 0);
-            case 15 -> MainMenu.getInventory(chunkService);
-            default -> null;
+        switch (event.getSlot()) {
+            case 11 -> {
+                openInventory(player, MemberMenu.getInventory(chunkService, player.getChunk(), 0));
+            }
+            case 15 -> {
+                chunkService.removeChunk(player.getChunk());
+                // Give Chunk Item to player
+            }
         };
-        openInventory(player, menu);
     }
 
     private void handleMemberMenuClick(InventoryClickEvent event, Player player) {
