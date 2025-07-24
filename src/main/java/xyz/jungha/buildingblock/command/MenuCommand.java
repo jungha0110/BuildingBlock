@@ -1,6 +1,7 @@
 package xyz.jungha.buildingblock.command;
 
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
@@ -31,7 +32,12 @@ public class MenuCommand implements TabExecutor {
             player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>메뉴를 불러오는 데 실패했습니다."));
             return true;
         }
-        if (!chunkService.getOwner(player.getChunk()).getUniqueId().equals(player.getUniqueId())) {
+        OfflinePlayer owner = chunkService.getOwner(player.getChunk());
+        if (owner == null) {
+            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>이 건차는 주인 없는 건차입니다."));
+            return true;
+        }
+        if (!owner.getUniqueId().equals(player.getUniqueId())) {
             player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>당신은 이 건차의 주인이 아닙니다."));
             return true;
         }

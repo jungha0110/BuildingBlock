@@ -44,7 +44,7 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName.set("BuildingBlock.jar")
+        archiveFileName.set("BuildingBlock-1.0.0bv.jar")
         destinationDirectory.set(File("C:\\Users\\sjh05\\Documents\\서버\\1.21.4\\plugins"))
     }
 
