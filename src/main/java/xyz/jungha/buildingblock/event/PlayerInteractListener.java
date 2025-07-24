@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import xyz.jungha.buildingblock.service.ChunkService;
 
 public class PlayerInteractListener implements Listener {
@@ -33,8 +34,9 @@ public class PlayerInteractListener implements Listener {
 
     private boolean isValidChunkItem(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
-        if (item == null || !event.getAction().isRightClick()) return false;
-        return item.getType().equals(Material.BOOK);
+        if (item == null || item.getType() != Material.PAPER || !event.getAction().isRightClick()) return false;
+        ItemMeta meta = item.getItemMeta();
+        return meta != null && meta.hasCustomModelData() && meta.getCustomModelData() == 10005;
     }
 
     private void decreaseItemInHand(Player player) {

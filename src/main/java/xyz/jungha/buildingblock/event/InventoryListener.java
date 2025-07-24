@@ -1,6 +1,6 @@
 package xyz.jungha.buildingblock.event;
 
-import com.github.nyaon08.rtustudio.nicknames.NickNames;
+import com.github.nyaon08.siny.names.NamesAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -9,9 +9,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.jungha.buildingblock.menu.AddMemberMenu;
-import xyz.jungha.buildingblock.menu.MainMenu;
 import xyz.jungha.buildingblock.menu.MemberMenu;
 import xyz.jungha.buildingblock.service.ChunkService;
 
@@ -62,15 +63,24 @@ public class InventoryListener implements Listener {
     }
 
     private void handleMainMenuClick(InventoryClickEvent event, Player player) {
-        switch (event.getSlot()) {
-            case 11 -> {
-                openInventory(player, MemberMenu.getInventory(chunkService, player.getChunk(), 0));
+        int slot = event.getSlot();
+        if (slot == 11) {
+            openInventory(player, MemberMenu.getInventory(chunkService, player.getChunk(), 0));
+        } else if (slot == 15) {
+            if (player.getInventory().firstEmpty() == -1) {
+                player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>인벤토리가 가득 찼습니다."));
+                return;
             }
-            case 15 -> {
-                chunkService.removeChunk(player.getChunk());
-                // Give Chunk Item to player
+            chunkService.removeChunk(player.getChunk());
+            ItemStack item = new ItemStack(Material.PAPER);
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null) {
+                meta.setCustomModelData(10005);
+                item.setItemMeta(meta);
             }
-        };
+            player.getInventory().addItem(item);
+            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 건차를 회수하였습니다."));
+        }
     }
 
     private void handleMemberMenuClick(InventoryClickEvent event, Player player) {
@@ -162,7 +172,7 @@ public class InventoryListener implements Listener {
 
     private static String getPlayerName(OfflinePlayer player) {
         try {
-            String nickName = NickNames.getInstance().getNickNamesManager().getName(player.getUniqueId());
+            String nickName = NamesAPI.getName(player);
             return (nickName != null && !nickName.isEmpty()) ? nickName : player.getName();
         } catch (NoClassDefFoundError e) {
             return player.getName();
