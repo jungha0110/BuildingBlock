@@ -80,6 +80,7 @@ public class InventoryListener implements Listener {
             }
             player.getInventory().addItem(item);
             player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 건차를 회수하였습니다."));
+            player.closeInventory();
         }
     }
 
