@@ -9,13 +9,11 @@ import java.util.List;
 
 public final class BuildingBlockAPI {
 
-    private static ChunkService chunkService;
+    private static BuildingBlock plugin;
 
-    private static ChunkService chunkService() {
-        if (chunkService == null) {
-            chunkService = Bukkit.getServicesManager().load(ChunkService.class);
-        }
-        return chunkService;
+    private static BuildingBlock plugin() {
+        if (plugin == null) plugin = BuildingBlock.getInstance();
+        return plugin;
     }
 
     /**
@@ -24,7 +22,7 @@ public final class BuildingBlockAPI {
      * @return 플레이어
      */
     public static OfflinePlayer getOwner(Chunk chunk) {
-        return chunkService().getOwner(chunk);
+        return plugin().getChunkService().getOwner(chunk);
     }
 
     /**
@@ -33,7 +31,7 @@ public final class BuildingBlockAPI {
      * @return 멤버 플레이어 목록
      */
     public static List<OfflinePlayer> getMembers(Chunk chunk) {
-        return chunkService().getMembers(chunk);
+        return plugin().getChunkService().getMembers(chunk);
     }
 
     /**
@@ -42,7 +40,7 @@ public final class BuildingBlockAPI {
      * @param member 멤버 플레이어
      */
     public static void addMember(Chunk chunk, OfflinePlayer member) {
-        chunkService().addMember(chunk, member);
+        plugin().getChunkService().addMember(chunk, member);
     }
 
     /**
@@ -51,6 +49,6 @@ public final class BuildingBlockAPI {
      * @param member 멤버 플레이어
      */
     public static void removeMember(Chunk chunk, OfflinePlayer member) {
-        chunkService().removeMember(chunk, member);
+        plugin().getChunkService().removeMember(chunk, member);
     }
 }
