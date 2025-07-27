@@ -3,6 +3,8 @@ version: 1.0.0
 main: xyz.jungha.buildingblock.BuildingBlock
 api-version: 1.21
 
+depend: [Names]
+
 commands:
   건차관리:
     description: 관리자용 건차 관리 명령어
