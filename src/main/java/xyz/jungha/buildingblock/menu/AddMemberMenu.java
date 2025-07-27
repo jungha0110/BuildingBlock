@@ -1,6 +1,6 @@
 package xyz.jungha.buildingblock.menu;
 
-import com.github.nyaon08.siny.names.NamesAPI;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -64,11 +64,7 @@ public class AddMemberMenu extends AbstractMenu {
     }
 
     private static String getPlayerName(OfflinePlayer player) {
-        try {
-            String nickName = NamesAPI.getName(player);
-            return (nickName != null && !nickName.isEmpty()) ? nickName : player.getName();
-        } catch (NoClassDefFoundError e) {
-            return player.getName();
-        }
+        String name = PlaceholderAPI.setPlaceholders(player, "%names_display%");
+        return (name.isEmpty() ? player.getName() : name);
     }
 }
