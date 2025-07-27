@@ -49,7 +49,7 @@ public class InventoryListener implements Listener {
 
         OfflinePlayer owner = chunkService.getOwner(player.getChunk());
         if (owner == null || !owner.equals(player)) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>당신은 이 건차의 주인이 아닙니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>당신은 이 건차의 <red>주인<#f9cccc>이 아닙니다."));
             player.closeInventory();
             return;
         }
@@ -69,7 +69,7 @@ public class InventoryListener implements Listener {
             openInventory(player, MemberMenu.getInventory(chunkService, player.getChunk(), 0));
         } else if (slot == 15) {
             if (player.getInventory().firstEmpty() == -1) {
-                player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>인벤토리가 가득 찼습니다."));
+                player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>인벤토리가 가득 찼습니다."));
                 return;
             }
             chunkService.removeChunk(player.getChunk());
@@ -80,7 +80,7 @@ public class InventoryListener implements Listener {
                 item.setItemMeta(meta);
             }
             player.getInventory().addItem(item);
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 건차를 회수하였습니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":green_ex: <#d5f9cc>건차를 <green>회수<#d5f9cc>하였습니다."));
             player.closeInventory();
         }
     }
@@ -112,7 +112,6 @@ public class InventoryListener implements Listener {
         getClickedPlayer(event).ifPresent(clickedPlayer -> {
             String playerName = getPlayerName(clickedPlayer);
             chunkService.addMember(player.getChunk(), clickedPlayer);
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + playerName + " 님을 멤버로 추가했습니다."));
             openInventory(player, AddMemberMenu.getInventory(chunkService, player.getChunk(), getCurrentPage(event)));
         });
     }
@@ -121,7 +120,6 @@ public class InventoryListener implements Listener {
         getClickedPlayer(event).ifPresent(clickedPlayer -> {
             String playerName = getPlayerName(clickedPlayer);
             chunkService.removeMember(player.getChunk(), clickedPlayer);
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + playerName + " 님을 멤버에서 제외했습니다."));
             openInventory(player, MemberMenu.getInventory(chunkService, player.getChunk(), getCurrentPage(event)));
         });
     }
@@ -161,7 +159,7 @@ public class InventoryListener implements Listener {
 
     private void openInventory(Player player, Inventory inventory) {
         if (inventory == null) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>메뉴를 불러오는 데 실패했습니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <red>메뉴<#f9cccc>를 불러오는 데 실패했습니다."));
             return;
         }
         player.openInventory(inventory);

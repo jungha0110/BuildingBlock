@@ -26,11 +26,11 @@ public class InfoCommand extends AbstractSubCommand {
 
         Chunk chunk = player.getLocation().getChunk();
         if (!chunkService.hasChunkData(chunk)) {
-            sendMessage(player, "주인 없는 구역 입니다");
+            sender.sendMessage(MINI_MESSAGE.deserialize(":blue_ex: <#9edaf4>주인 없는 구역입니다"));
             return true;
         }
 
-        sendMessage(player, "아이디 : " + chunk.getX() + "-" + chunk.getZ());
+        sender.sendMessage(MINI_MESSAGE.deserialize(":blue_ex: <#9edaf4>아이디 : <blue>" + chunk.getX() + "-" + chunk.getZ()));
 
         OfflinePlayer owner = chunkService.getOwner(chunk);
         String ownerName = "없음";
@@ -38,13 +38,13 @@ public class InfoCommand extends AbstractSubCommand {
             String name = PlaceholderAPI.setPlaceholders(owner, "%names_display%");
             ownerName = owner.getName() + " / " + (name.isEmpty() ? "없음" : name);
         }
-        sendMessage(player, "ㄴ 주인 : " + ownerName);
+        sender.sendMessage(MINI_MESSAGE.deserialize("ㄴ <#9edaf4>주인 : <blue>" + ownerName));
 
         String members = chunkService.getMembers(chunk).stream()
                 .map(OfflinePlayer::getName)
                 .filter(Objects::nonNull)
                 .collect(Collectors.joining(", "));
-        sendMessage(player, "ㄴ 멤버 : " + (members.isEmpty() ? "없음" : members));
+        sender.sendMessage(MINI_MESSAGE.deserialize("ㄴ <#9edaf4>멤버 : " + (members.isEmpty() ? "없음" : members)));
 
         return true;
     }

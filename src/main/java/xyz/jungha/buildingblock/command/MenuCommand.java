@@ -24,25 +24,24 @@ public class MenuCommand implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("[<green>건차<white>] <red>플레이어만 사용할 수 있습니다.");
+            sender.sendMessage(":red_ex: <red>플레이어<#f9cccc>만 사용할 수 있습니다.");
             return true;
         }
         Inventory mainMenu = MainMenu.getInventory(chunkService);
         if (mainMenu == null) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>메뉴를 불러오는 데 실패했습니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <red>메뉴<#f9cccc>를 불러오는 데 실패했습니다."));
             return true;
         }
         OfflinePlayer owner = chunkService.getOwner(player.getChunk());
         if (owner == null) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>이 건차는 주인 없는 건차입니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>이 건차는 주인 없는 건차입니다."));
             return true;
         }
         if (!owner.getUniqueId().equals(player.getUniqueId())) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>당신은 이 건차의 주인이 아닙니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>당신은 이 건차의 주인이 아닙니다."));
             return true;
         }
         player.openInventory(mainMenu);
-        player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 메뉴를 열었습니다."));
         return true;
     }
 

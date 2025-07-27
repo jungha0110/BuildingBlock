@@ -36,13 +36,13 @@ public class MemberMenu extends AbstractMenu {
                 meta.displayName(MINI_MESSAGE.deserialize("<white>" + playerName));
                 meta.lore(List.of(
                         Component.empty(),
-                        MINI_MESSAGE.deserialize("<gray>클릭하여 이 멤버를 제외합니다.")
+                        MINI_MESSAGE.deserialize("<white>:left_m: <gray>클릭하여 이 멤버를 제외합니다.")
                 ));
             });
             inv.addItem(playerHead);
         }
 
-        inv.setItem(49, createItem(Material.PAPER, "멤버 추가", List.of(" ", "<gray>클릭 시 멤버 추가 메뉴창이 열립니다.")));
+        inv.setItem(49, createItem(Material.PAPER, "멤버 추가", List.of(" ", "<white>:left_m: <gray>클릭 시 멤버 추가 메뉴창이 열립니다.")));
 
         if (page > 0) {
             inv.setItem(47, createItem(Material.PAPER, "<red>이전 페이지", null));

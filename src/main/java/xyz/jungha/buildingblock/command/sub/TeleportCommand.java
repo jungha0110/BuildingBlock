@@ -24,7 +24,7 @@ public class TeleportCommand extends AbstractSubCommand {
 
         String[] id = args[0].split("-");
         if (id.length != 2) {
-            sendMessage(player, "<red>잘못된 ID 형식입니다.");
+            sender.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>잘못된 ID 형식입니다."));
             return true;
         }
 
@@ -35,9 +35,9 @@ public class TeleportCommand extends AbstractSubCommand {
             int blockZ = (chunkZ << 4) + 8;
             int blockY = player.getWorld().getHighestBlockYAt(blockX, blockZ);
             player.teleport(new org.bukkit.Location(player.getWorld(), blockX + 0.5, blockY, blockZ + 0.5));
-            sendMessage(player, "<aqua>청크로 이동했습니다.");
+            sender.sendMessage(MINI_MESSAGE.deserialize(":green_ex: <#d5f9cc>청크로 이동했습니다."));
         } catch (NumberFormatException e) {
-            sendMessage(player, "<red>잘못된 ID 입니다.");
+            sender.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>잘못된 ID 입니다."));
         }
         return true;
     }

@@ -38,13 +38,9 @@ public abstract class AbstractSubCommand implements SubCommand {
         return sender.hasPermission(permission);
     }
 
-    protected void sendMessage(CommandSender sender, String message) {
-        sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] " + message));
-    }
-
     protected Player getPlayer(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sendMessage(sender, "<red>플레이어만 사용할 수 있습니다.");
+            sender.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <red>플레이어<#f9cccc>만 사용할 수 있습니다."));
             return null;
         }
         return (Player) sender;

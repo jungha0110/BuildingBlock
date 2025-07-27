@@ -25,10 +25,10 @@ public class PlayerInteractListener implements Listener {
         event.setCancelled(true);
         Player player = event.getPlayer();
         if (chunkService.createChunk(player, player.getLocation().getChunk())) {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] 건차가 생성되었습니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":green_ex: <#d5f9cc>건차가 생성되었습니다."));
             decreaseItemInHand(player);
         } else {
-            player.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>이미 건차가 존재합니다."));
+            player.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#d5f9cc>이미 건차가 존재합니다."));
         }
     }
 

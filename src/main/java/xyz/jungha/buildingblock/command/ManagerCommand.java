@@ -36,7 +36,7 @@ public class ManagerCommand implements TabExecutor {
         }
 
         if (!mainCommand.hasPermission(sender)) {
-            sender.sendMessage(MINI_MESSAGE.deserialize("[<green>건차<white>] <red>당신은 권한이 없습니다."));
+            sender.sendMessage(MINI_MESSAGE.deserialize(":red_ex: <#f9cccc>당신은 권한이 없습니다."));
             return true;
         }
 
@@ -44,10 +44,10 @@ public class ManagerCommand implements TabExecutor {
     }
 
     private void showHelp(CommandSender sender, String label, Map<String, SubCommand> commands) {
-        sender.sendMessage(MINI_MESSAGE.deserialize(chunkService.getConfig().getString("help-header", "<gold>Help:")));
+        sender.sendMessage(MINI_MESSAGE.deserialize(":yellow_q: <#f5f9cc>도움말"));
         commands.values().stream()
                 .filter(sub -> sub.hasPermission(sender))
-                .forEach(sub -> sender.sendMessage(MINI_MESSAGE.deserialize("- /%label% %name% %usage%"
+                .forEach(sub -> sender.sendMessage(MINI_MESSAGE.deserialize("- <#f5f9cc>/%label% %name% %usage%"
                         .replace("%label%", label)
                         .replace("%name%", sub.getName())
                         .replace("%usage%", sub.getUsage()))));

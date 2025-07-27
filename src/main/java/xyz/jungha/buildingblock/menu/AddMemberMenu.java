@@ -47,7 +47,7 @@ public class AddMemberMenu extends AbstractMenu {
                 meta.displayName(MINI_MESSAGE.deserialize("<white>" + playerName));
                 meta.lore(List.of(
                         Component.empty(),
-                        MINI_MESSAGE.deserialize("<gray>클릭하여 멤버로 추가합니다.")
+                        MINI_MESSAGE.deserialize("<white>:left_m: <gray>클릭하여 멤버로 추가합니다.")
                 ));
             });
             inv.addItem(playerHead);
