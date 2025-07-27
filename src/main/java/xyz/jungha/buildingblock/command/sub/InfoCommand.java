@@ -1,5 +1,6 @@
 package xyz.jungha.buildingblock.command.sub;
 
+import com.github.nyaon08.siny.names.NamesAPI;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -30,10 +31,15 @@ public class InfoCommand extends AbstractSubCommand {
             return true;
         }
 
-        sendMessage(player, chunk.getX() + "-" + chunk.getZ());
+        sendMessage(player, "아이디 : " + chunk.getX() + "-" + chunk.getZ());
 
         OfflinePlayer owner = chunkService.getOwner(chunk);
-        sendMessage(player, "ㄴ 주인 : " + (owner != null ? owner.getName() : "없음"));
+        String ownerName = "없음";
+        if (owner != null) {
+            String name = NamesAPI.getName(owner);
+            ownerName = owner.getName() + " / " + (name != null ? name : "없음");
+        }
+        sendMessage(player, "ㄴ 주인 : " + ownerName);
 
         String members = chunkService.getMembers(chunk).stream()
                 .map(OfflinePlayer::getName)

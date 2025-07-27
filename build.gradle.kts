@@ -29,7 +29,7 @@ dependencies {
 
     compileOnly("com.nexomc:nexo:1.8.0")
 
-    compileOnly(fileTree("libs") { include("*.jar") })
+    compileOnlyApi(fileTree("libs") { include("*.jar") })
 
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
 }
