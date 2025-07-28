@@ -1,6 +1,5 @@
 package xyz.jungha.buildingblock.menu;
 
-import com.github.nyaon08.siny.names.NamesAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -10,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import xyz.jungha.buildingblock.service.ChunkService;
+import xyz.jungha.buildingblock.service.NicknameLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class MemberMenu extends AbstractMenu {
     }
 
     private static String getPlayerName(OfflinePlayer player) {
-        String name = NamesAPI.getName(player);
+        String name = NicknameLoader.getNickname(player);
         return (name.isEmpty() ? player.getName() : name);
     }
 }

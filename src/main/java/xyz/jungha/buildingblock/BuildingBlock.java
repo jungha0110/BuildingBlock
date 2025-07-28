@@ -13,6 +13,7 @@ import xyz.jungha.buildingblock.event.InventoryListener;
 import xyz.jungha.buildingblock.event.PlayerInteractListener;
 import xyz.jungha.buildingblock.repository.ChunkRepository;
 import xyz.jungha.buildingblock.service.ChunkService;
+import xyz.jungha.buildingblock.service.NicknameLoader;
 
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class BuildingBlock extends JavaPlugin {
                 new PlayerInteractListener(chunkService),
                 new InventoryListener(chunkService)
         );
+
+        NicknameLoader.loadNicknameJson();
     }
 
     @Override
