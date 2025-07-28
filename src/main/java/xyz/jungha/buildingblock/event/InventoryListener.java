@@ -1,8 +1,7 @@
 package xyz.jungha.buildingblock.event;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.github.nyaon08.siny.names.NamesAPI;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -171,7 +170,7 @@ public class InventoryListener implements Listener {
     }
 
     private static String getPlayerName(OfflinePlayer player) {
-        String name = PlaceholderAPI.setPlaceholders(player, "%names_display%");
+        String name = NamesAPI.getName(player);
         return (name.isEmpty() ? player.getName() : name);
     }
 }

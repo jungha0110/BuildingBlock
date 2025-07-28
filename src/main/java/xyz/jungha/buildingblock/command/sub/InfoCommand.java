@@ -1,6 +1,6 @@
 package xyz.jungha.buildingblock.command.sub;
 
-import me.clip.placeholderapi.PlaceholderAPI;
+import com.github.nyaon08.siny.names.NamesAPI;
 import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -35,7 +35,7 @@ public class InfoCommand extends AbstractSubCommand {
         OfflinePlayer owner = chunkService.getOwner(chunk);
         String ownerName = "없음";
         if (owner != null) {
-            String name = PlaceholderAPI.setPlaceholders(owner, "%names_display%");
+            String name = NamesAPI.getName(player);
             ownerName = owner.getName() + " / " + (name.isEmpty() ? "없음" : name);
         }
         sender.sendMessage(MINI_MESSAGE.deserialize("ㄴ <#9edaf4>주인 : <blue>" + ownerName));
